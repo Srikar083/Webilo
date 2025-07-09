@@ -1,8 +1,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { 
   Undo, 
   Redo, 
@@ -11,50 +9,27 @@ import {
   Share, 
   Settings, 
   Plus, 
-  Type, 
-  Image, 
-  Square, 
-  Circle,
-  Layout,
   Smartphone,
   Monitor,
   Tablet,
-  Trash2
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
-
-interface CanvasElement {
-  id: string;
-  type: 'text' | 'image' | 'button' | 'section' | 'shape';
-  content: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  style: {
-    fontSize?: string;
-    color?: string;
-    backgroundColor?: string;
-    borderRadius?: string;
-  };
-}
+import { DraggableElement } from "../components/editor/DraggableElement";
+import { ElementToolbar } from "../components/editor/ElementToolbar";
+import { PropertiesPanel } from "../components/editor/PropertiesPanel";
+import { CanvasElement } from "../types/editor";
 
 const WebsiteEditor = () => {
   const { type, id } = useParams();
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
-  const [draggedElement, setDraggedElement] = useState<string | null>(null);
+  const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false);
+  const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
-
-  const elements = [
-    { id: 'text', name: 'Text', icon: Type, description: 'Add headings and paragraphs' },
-    { id: 'image', name: 'Image', icon: Image, description: 'Upload and display images' },
-    { id: 'button', name: 'Button', icon: Square, description: 'Call-to-action buttons' },
-    { id: 'section', name: 'Section', icon: Layout, description: 'Container for other elements' },
-    { id: 'shape', name: 'Shape', icon: Circle, description: 'Geometric shapes' },
-  ];
 
   useEffect(() => {
     // Initialize with template content if it's a template
@@ -62,68 +37,66 @@ const WebsiteEditor = () => {
       const templateElements: CanvasElement[] = [
         {
           id: '1',
-          type: 'text',
+          type: 'heading',
           content: 'Welcome to Your Website',
-          x: 50,
-          y: 50,
-          width: 400,
+          x: 100,
+          y: 80,
+          width: 500,
           height: 60,
-          style: { fontSize: '2rem', color: '#000000' }
+          style: { fontSize: '2.5rem', color: '#1f2937', fontWeight: 'bold' }
         },
         {
           id: '2',
           type: 'text',
-          content: 'This is a sample subtitle that you can edit',
-          x: 50,
-          y: 120,
-          width: 300,
+          content: 'This is a sample subtitle that you can edit and customize',
+          x: 100,
+          y: 160,
+          width: 400,
           height: 30,
-          style: { fontSize: '1rem', color: '#666666' }
+          style: { fontSize: '1.125rem', color: '#6b7280' }
+        },
+        {
+          id: '3',
+          type: 'button',
+          content: 'Get Started',
+          x: 100,
+          y: 220,
+          width: 150,
+          height: 45,
+          style: { backgroundColor: '#3b82f6', color: '#ffffff', borderRadius: '8px' }
         }
       ];
       setCanvasElements(templateElements);
     }
   }, [type, id]);
 
-  const handleDragStart = (elementType: string) => {
-    setDraggedElement(elementType);
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    if (!draggedElement || !canvasRef.current) return;
-
-    const rect = canvasRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
+  const handleAddElement = (elementType: string) => {
     const newElement: CanvasElement = {
       id: Date.now().toString(),
-      type: draggedElement as any,
-      content: getDefaultContent(draggedElement),
-      x,
-      y,
-      width: getDefaultWidth(draggedElement),
-      height: getDefaultHeight(draggedElement),
-      style: getDefaultStyle(draggedElement)
+      type: elementType as any,
+      content: getDefaultContent(elementType),
+      x: 100,
+      y: 100,
+      width: getDefaultWidth(elementType),
+      height: getDefaultHeight(elementType),
+      style: getDefaultStyle(elementType)
     };
 
     setCanvasElements(prev => [...prev, newElement]);
-    setDraggedElement(null);
-    toast.success(`${draggedElement} element added!`);
+    setSelectedElement(newElement.id);
+    toast.success(`${elementType} element added!`);
   };
 
   const getDefaultContent = (type: string): string => {
     switch (type) {
-      case 'text': return 'Click to edit text';
-      case 'button': return 'Button';
-      case 'image': return 'Image placeholder';
-      case 'section': return 'Section';
-      case 'shape': return 'Shape';
+      case 'text': return 'Edit this text';
+      case 'heading': return 'Your Heading';
+      case 'button': return 'Click Me';
+      case 'image': return 'Image';
+      case 'section': return 'Container';
+      case 'shape': return '';
+      case 'divider': return '';
+      case 'spacer': return '';
       default: return 'Element';
     }
   };
@@ -131,45 +104,77 @@ const WebsiteEditor = () => {
   const getDefaultWidth = (type: string): number => {
     switch (type) {
       case 'text': return 200;
+      case 'heading': return 300;
       case 'button': return 120;
       case 'image': return 250;
-      case 'section': return 300;
+      case 'section': return 400;
       case 'shape': return 100;
+      case 'divider': return 300;
+      case 'spacer': return 100;
       default: return 100;
     }
   };
 
   const getDefaultHeight = (type: string): number => {
     switch (type) {
-      case 'text': return 40;
+      case 'text': return 24;
+      case 'heading': return 40;
       case 'button': return 40;
       case 'image': return 150;
       case 'section': return 200;
       case 'shape': return 100;
+      case 'divider': return 2;
+      case 'spacer': return 50;
       default: return 40;
     }
   };
 
   const getDefaultStyle = (type: string) => {
     switch (type) {
-      case 'text': return { fontSize: '1rem', color: '#000000' };
-      case 'button': return { backgroundColor: '#3B82F6', color: '#FFFFFF', borderRadius: '6px' };
-      case 'image': return { backgroundColor: '#F3F4F6' };
-      case 'section': return { backgroundColor: '#F9FAFB', borderRadius: '8px' };
-      case 'shape': return { backgroundColor: '#10B981', borderRadius: '50%' };
+      case 'text': return { fontSize: '1rem', color: '#374151' };
+      case 'heading': return { fontSize: '1.5rem', color: '#1f2937', fontWeight: 'bold' };
+      case 'button': return { backgroundColor: '#3b82f6', color: '#ffffff', borderRadius: '6px' };
+      case 'image': return { backgroundColor: '#f3f4f6', borderRadius: '4px' };
+      case 'section': return { backgroundColor: '#f9fafb', borderRadius: '8px' };
+      case 'shape': return { backgroundColor: '#10b981', borderRadius: '50%' };
+      case 'divider': return { backgroundColor: '#e5e7eb' };
+      case 'spacer': return { backgroundColor: 'transparent' };
       default: return {};
     }
   };
 
-  const handleElementClick = (elementId: string) => {
-    setSelectedElement(elementId);
+  const handleUpdateElement = (id: string, updates: Partial<CanvasElement>) => {
+    setCanvasElements(prev => prev.map(el => 
+      el.id === id ? { ...el, ...updates } : el
+    ));
   };
 
-  const handleDeleteElement = () => {
-    if (selectedElement) {
-      setCanvasElements(prev => prev.filter(el => el.id !== selectedElement));
+  const handleDeleteElement = (id: string) => {
+    setCanvasElements(prev => prev.filter(el => el.id !== id));
+    if (selectedElement === id) {
       setSelectedElement(null);
-      toast.success("Element deleted!");
+    }
+    toast.success("Element deleted!");
+  };
+
+  const handleDuplicateElement = (id: string) => {
+    const element = canvasElements.find(el => el.id === id);
+    if (element) {
+      const newElement = {
+        ...element,
+        id: Date.now().toString(),
+        x: element.x + 20,
+        y: element.y + 20
+      };
+      setCanvasElements(prev => [...prev, newElement]);
+      setSelectedElement(newElement.id);
+      toast.success("Element duplicated!");
+    }
+  };
+
+  const handleCanvasClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      setSelectedElement(null);
     }
   };
 
@@ -187,19 +192,21 @@ const WebsiteEditor = () => {
 
   const getCanvasWidth = () => {
     switch (viewMode) {
-      case 'mobile': return 'max-w-sm';
-      case 'tablet': return 'max-w-2xl';
-      default: return 'w-full';
+      case 'mobile': return 'w-[375px]';
+      case 'tablet': return 'w-[768px]';
+      default: return 'w-full max-w-[1200px]';
     }
   };
 
+  const selectedElementData = canvasElements.find(el => el.id === selectedElement);
+
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-4 py-3">
+      <header className="bg-white border-b border-gray-200 px-4 py-3 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <Link to="/dashboard" className="text-blue-600 hover:text-blue-700">
+            <Link to="/dashboard" className="text-blue-600 hover:text-blue-700 flex items-center">
               ← Back to Dashboard
             </Link>
             <div>
@@ -254,178 +261,96 @@ const WebsiteEditor = () => {
               <Share className="w-4 h-4 mr-2" />
               Publish
             </Button>
-            <Button variant="outline" size="sm">
-              <Settings className="w-4 h-4" />
-            </Button>
           </div>
         </div>
       </header>
 
-      <div className="flex-1 flex">
-        {/* Sidebar - Elements Panel */}
-        <aside className="w-64 bg-white border-r border-gray-200 p-4">
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold mb-4">Elements</h2>
-            <div className="space-y-2">
-              {elements.map((element) => (
-                <Card
-                  key={element.id}
-                  className="cursor-grab hover:shadow-md transition-shadow p-3"
-                  draggable
-                  onDragStart={() => handleDragStart(element.id)}
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <element.icon className="w-4 h-4 text-blue-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-sm">{element.name}</h3>
-                      <p className="text-xs text-gray-500">{element.description}</p>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h2 className="text-lg font-semibold mb-4">Layers</h2>
-            <div className="space-y-1">
-              {canvasElements.map((element) => (
-                <div
-                  key={element.id}
-                  className={`p-2 text-sm rounded cursor-pointer ${
-                    selectedElement === element.id
-                      ? 'bg-blue-50 text-blue-700'
-                      : 'text-gray-600 hover:bg-gray-50'
-                  }`}
-                  onClick={() => handleElementClick(element.id)}
-                >
-                  {element.type.charAt(0).toUpperCase() + element.type.slice(1)} - {element.content.substring(0, 15)}
-                </div>
-              ))}
-              {canvasElements.length === 0 && (
-                <p className="text-gray-500 text-sm">No elements added yet</p>
-              )}
-            </div>
-          </div>
-        </aside>
-
-        {/* Main Canvas */}
-        <main className="flex-1 p-6">
-          <div className="h-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-            <div className={`mx-auto transition-all duration-300 ${getCanvasWidth()}`}>
-              {/* Canvas Content */}
-              <div
-                ref={canvasRef}
-                className="min-h-full bg-white relative"
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-                style={{ minHeight: '600px' }}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left Panel - Elements */}
+        <div className={`${leftPanelCollapsed ? 'w-12' : 'w-64'} bg-white border-r border-gray-200 flex-shrink-0 transition-all duration-300`}>
+          <div className="h-full flex flex-col">
+            <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+              {!leftPanelCollapsed && <h2 className="font-semibold">Elements</h2>}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setLeftPanelCollapsed(!leftPanelCollapsed)}
               >
-                {canvasElements.length === 0 ? (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <Plus className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold text-gray-600 mb-2">Start Building</h3>
-                      <p className="text-gray-500">Drag elements from the sidebar to get started</p>
-                    </div>
-                  </div>
-                ) : (
-                  canvasElements.map((element) => (
-                    <div
-                      key={element.id}
-                      className={`absolute cursor-pointer border-2 ${
-                        selectedElement === element.id
-                          ? 'border-blue-500'
-                          : 'border-transparent hover:border-gray-300'
-                      }`}
-                      style={{
-                        left: element.x,
-                        top: element.y,
-                        width: element.width,
-                        height: element.height,
-                        ...element.style,
-                      }}
-                      onClick={() => handleElementClick(element.id)}
-                    >
-                      {element.type === 'text' && (
-                        <div className="p-2 h-full flex items-center">
-                          {element.content}
-                        </div>
-                      )}
-                      {element.type === 'button' && (
-                        <button className="w-full h-full px-4 py-2 text-sm font-medium">
-                          {element.content}
-                        </button>
-                      )}
-                      {element.type === 'image' && (
-                        <div className="w-full h-full flex items-center justify-center border border-gray-300">
-                          <Image className="w-8 h-8 text-gray-400" />
-                        </div>
-                      )}
-                      {element.type === 'section' && (
-                        <div className="w-full h-full p-4 flex items-center justify-center">
-                          <span className="text-gray-500">Section</span>
-                        </div>
-                      )}
-                      {element.type === 'shape' && (
-                        <div className="w-full h-full"></div>
-                      )}
-                    </div>
-                  ))
-                )}
-              </div>
+                {leftPanelCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+              </Button>
             </div>
-          </div>
-        </main>
-
-        {/* Properties Panel */}
-        <aside className="w-64 bg-white border-l border-gray-200 p-4">
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold mb-4">Properties</h2>
-            {selectedElement ? (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Element Type</label>
-                  <Badge variant="outline" className="mb-4">
-                    {canvasElements.find(e => e.id === selectedElement)?.type}
-                  </Badge>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium mb-2">Content</label>
-                  <input 
-                    type="text" 
-                    className="w-full border border-gray-300 rounded px-3 py-2" 
-                    value={canvasElements.find(e => e.id === selectedElement)?.content || ''}
-                    onChange={(e) => {
-                      setCanvasElements(prev => prev.map(el => 
-                        el.id === selectedElement 
-                          ? { ...el, content: e.target.value }
-                          : el
-                      ));
-                    }}
-                  />
-                </div>
-                
-                <Button 
-                  variant="destructive" 
-                  size="sm" 
-                  onClick={handleDeleteElement}
-                  className="w-full"
-                >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Delete Element
-                </Button>
+            {!leftPanelCollapsed && (
+              <div className="flex-1 overflow-y-auto p-4">
+                <ElementToolbar onAddElement={handleAddElement} />
               </div>
-            ) : (
-              <p className="text-gray-500 text-center py-8">
-                Select an element to edit its properties
-              </p>
             )}
           </div>
-        </aside>
+        </div>
+
+        {/* Main Canvas */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="flex-1 p-6 overflow-auto">
+            <div className="flex justify-center">
+              <div className={`${getCanvasWidth()} transition-all duration-300`}>
+                <div
+                  ref={canvasRef}
+                  className="bg-white rounded-lg border border-gray-200 shadow-sm relative overflow-hidden"
+                  style={{ minHeight: '600px', height: '800px' }}
+                  onClick={handleCanvasClick}
+                >
+                  {canvasElements.length === 0 ? (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center">
+                        <Plus className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                        <h3 className="text-lg font-semibold text-gray-600 mb-2">Start Building</h3>
+                        <p className="text-gray-500">Add elements from the left panel to get started</p>
+                      </div>
+                    </div>
+                  ) : (
+                    canvasElements.map((element) => (
+                      <DraggableElement
+                        key={element.id}
+                        element={element}
+                        isSelected={selectedElement === element.id}
+                        onSelect={() => setSelectedElement(element.id)}
+                        onUpdate={(updates) => handleUpdateElement(element.id, updates)}
+                        onDelete={() => handleDeleteElement(element.id)}
+                        onDuplicate={() => handleDuplicateElement(element.id)}
+                        canvasRef={canvasRef}
+                      />
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Panel - Properties */}
+        <div className={`${rightPanelCollapsed ? 'w-12' : 'w-80'} bg-white border-l border-gray-200 flex-shrink-0 transition-all duration-300`}>
+          <div className="h-full flex flex-col">
+            <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setRightPanelCollapsed(!rightPanelCollapsed)}
+              >
+                {rightPanelCollapsed ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+              </Button>
+              {!rightPanelCollapsed && <h2 className="font-semibold">Properties</h2>}
+            </div>
+            {!rightPanelCollapsed && (
+              <div className="flex-1 overflow-y-auto p-4">
+                <PropertiesPanel
+                  selectedElement={selectedElementData || null}
+                  onUpdateElement={handleUpdateElement}
+                  onDeleteElement={handleDeleteElement}
+                  onDuplicateElement={handleDuplicateElement}
+                />
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
