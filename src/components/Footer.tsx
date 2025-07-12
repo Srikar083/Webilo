@@ -4,7 +4,7 @@ import { Github, Twitter, Linkedin, Mail } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-12">
+    <footer className="bg-gray-900 dark:bg-gray-950 text-white py-12">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">
           {/* Brand */}
@@ -15,7 +15,7 @@ const Footer = () => {
               </div>
               <span className="text-xl font-bold">Webilo</span>
             </div>
-            <p className="text-gray-400">
+            <p className="text-gray-400 dark:text-gray-300">
               Build beautiful websites without code. Perfect for students, NGOs, and small businesses.
             </p>
             <div className="flex space-x-4">
@@ -92,8 +92,8 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 Webilo. All rights reserved. Built with ❤️ for creators worldwide.</p>
+        <div className="border-t border-gray-800 dark:border-gray-700 mt-8 pt-8 text-center text-gray-400 dark:text-gray-300">
+          <p>&copy; 2025 Webilo. All rights reserved. Built with ❤️ for creators worldwide.</p>
         </div>
       </div>
     </footer>

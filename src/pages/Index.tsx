@@ -9,18 +9,18 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-background to-purple-50 dark:from-gray-900 dark:via-background dark:to-gray-800">
       <Navigation />
       
       {/* Hero Section */}
       <section className="container mx-auto px-4 pt-24 pb-12">
         <div className="text-center max-w-4xl mx-auto">
-          <Badge className="mb-6 bg-blue-100 text-blue-700 hover:bg-blue-200 px-4 py-2">
+          <Badge className="mb-6 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800 px-4 py-2">
             <Zap className="w-4 h-4 mr-2" />
             Build Professional Websites Without Code
           </Badge>
           
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-foreground via-blue-800 to-purple-800 dark:from-gray-100 dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
             Create Stunning Websites
             <br />
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -28,7 +28,7 @@ const Index = () => {
             </span>
           </h1>
           
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
             The perfect website builder for students, NGOs, and small businesses. Drag, 
             drop, and publish your dream website with our intuitive platform.
           </p>
@@ -47,7 +47,7 @@ const Index = () => {
             <Button 
               variant="outline" 
               size="lg" 
-              className="px-8 py-3 text-lg border-2 hover:bg-gray-50"
+              className="px-8 py-3 text-lg border-2 hover:bg-muted"
             >
               <Play className="mr-2 h-5 w-5" />
               Watch Demo
@@ -57,14 +57,14 @@ const Index = () => {
         
         {/* Hero Image/Demo */}
         <div className="mt-16 max-w-5xl mx-auto">
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-200">
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border">
             <div className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-1">
-              <div className="bg-white rounded-xl p-8">
-                <div className="aspect-video bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
+              <div className="bg-background rounded-xl p-8">
+                <div className="aspect-video bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 rounded-lg flex items-center justify-center">
                   <div className="text-center">
                     <Globe className="w-16 h-16 mx-auto mb-4 text-blue-600" />
-                    <h3 className="text-2xl font-semibold text-gray-800">Website Builder Interface</h3>
-                    <p className="text-gray-600 mt-2">Drag & Drop Editor Coming Soon</p>
+                    <h3 className="text-2xl font-semibold text-foreground">Website Builder Interface</h3>
+                    <p className="text-muted-foreground mt-2">Drag & Drop Editor Coming Soon</p>
                   </div>
                 </div>
               </div>
@@ -74,11 +74,11 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Everything You Need to Build Amazing Websites</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold mb-4 text-foreground">Everything You Need to Build Amazing Websites</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Powerful features designed to help you create professional websites without any coding knowledge.
             </p>
           </div>
@@ -86,7 +86,7 @@ const Index = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mb-4">
                   <Palette className="w-6 h-6 text-blue-600" />
                 </div>
                 <CardTitle>Drag & Drop Editor</CardTitle>
@@ -98,7 +98,7 @@ const Index = () => {
             
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mb-4">
                   <Globe className="w-6 h-6 text-purple-600" />
                 </div>
                 <CardTitle>Professional Templates</CardTitle>
@@ -110,7 +110,7 @@ const Index = () => {
             
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mb-4">
                   <Smartphone className="w-6 h-6 text-green-600" />
                 </div>
                 <CardTitle>Mobile Responsive</CardTitle>
@@ -122,7 +122,7 @@ const Index = () => {
             
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mb-4">
                   <Code className="w-6 h-6 text-orange-600" />
                 </div>
                 <CardTitle>No Code Required</CardTitle>
@@ -134,7 +134,7 @@ const Index = () => {
             
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900 rounded-lg flex items-center justify-center mb-4">
                   <Zap className="w-6 h-6 text-pink-600" />
                 </div>
                 <CardTitle>Fast Publishing</CardTitle>
@@ -146,7 +146,7 @@ const Index = () => {
             
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center mb-4">
                   <Users className="w-6 h-6 text-indigo-600" />
                 </div>
                 <CardTitle>Team Collaboration</CardTitle>
