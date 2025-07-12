@@ -34,7 +34,7 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/dashboard">
+            <a href="https://demo.puckeditor.com/edit" target="_blank" rel="noopener noreferrer">
               <Button 
                 size="lg" 
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 text-lg"
@@ -42,7 +42,7 @@ const Index = () => {
                 Start Building Free
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-            </Link>
+            </a>
             
             <Button 
               variant="outline" 
@@ -168,7 +168,7 @@ const Index = () => {
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
             Join thousands of students, NGOs, and small businesses who trust Webilo to create their online presence.
           </p>
-          <Link to="/dashboard">
+          <a href="https://demo.puckeditor.com/edit" target="_blank" rel="noopener noreferrer">
             <Button 
               size="lg" 
               variant="secondary"
@@ -177,7 +177,7 @@ const Index = () => {
               Get Started for Free
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-          </Link>
+          </a>
         </div>
       </section>
 
