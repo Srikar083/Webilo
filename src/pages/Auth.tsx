@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,21 +7,83 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Lock, User, ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent, type: 'login' | 'signup') => {
+  // Check if user is already logged in
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        navigate('/');
+      }
+    };
+    checkUser();
+  }, [navigate]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email = formData.get('login-email') as string;
+    const password = formData.get('login-password') as string;
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        toast.error(error.message);
+      } else if (data.user) {
+        toast.success('Welcome back!');
+        navigate('/');
+      }
+    } catch (error) {
+      toast.error('An unexpected error occurred');
+    } finally {
       setIsLoading(false);
-      toast.success(type === 'login' ? 'Welcome back!' : 'Account created successfully!');
-    }, 1500);
+    }
+  };
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email = formData.get('signup-email') as string;
+    const password = formData.get('signup-password') as string;
+    const name = formData.get('signup-name') as string;
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/`,
+          data: {
+            full_name: name,
+          }
+        }
+      });
+
+      if (error) {
+        toast.error(error.message);
+      } else if (data.user) {
+        toast.success('Account created! Please check your email to verify your account.');
+      }
+    } catch (error) {
+      toast.error('An unexpected error occurred');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -56,13 +118,14 @@ const Auth = () => {
               </TabsList>
               
               <TabsContent value="login" className="space-y-4">
-                <form onSubmit={(e) => handleSubmit(e, 'login')} className="space-y-4">
+                <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="login-email">Email</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                       <Input 
                         id="login-email" 
+                        name="login-email"
                         type="email" 
                         placeholder="Enter your email"
                         className="pl-10"
@@ -76,6 +139,7 @@ const Auth = () => {
                       <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                       <Input 
                         id="login-password" 
+                        name="login-password"
                         type="password" 
                         placeholder="Enter your password"
                         className="pl-10"
@@ -100,13 +164,14 @@ const Auth = () => {
               </TabsContent>
               
               <TabsContent value="signup" className="space-y-4">
-                <form onSubmit={(e) => handleSubmit(e, 'signup')} className="space-y-4">
+                <form onSubmit={handleSignup} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="signup-name">Full Name</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                       <Input 
                         id="signup-name" 
+                        name="signup-name"
                         type="text" 
                         placeholder="Enter your full name"
                         className="pl-10"
@@ -120,6 +185,7 @@ const Auth = () => {
                       <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                       <Input 
                         id="signup-email" 
+                        name="signup-email"
                         type="email" 
                         placeholder="Enter your email"
                         className="pl-10"
@@ -133,6 +199,7 @@ const Auth = () => {
                       <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                       <Input 
                         id="signup-password" 
+                        name="signup-password"
                         type="password" 
                         placeholder="Create a password"
                         className="pl-10"
