@@ -49,21 +49,18 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/features" className="text-muted-foreground hover:text-foreground transition-colors">
+            <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
               Features
-            </Link>
-            <Link to="/pricing" className="text-muted-foreground hover:text-foreground transition-colors">
-              Pricing
-            </Link>
-            <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
+            </a>
+            <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors">
               About
-            </Link>
-            <Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
+            </a>
+            <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">
               Contact
-            </Link>
-            <Link to="/faq" className="text-muted-foreground hover:text-foreground transition-colors">
+            </a>
+            <a href="#faq" className="text-muted-foreground hover:text-foreground transition-colors">
               FAQ
-            </Link>
+            </a>
           </div>
 
           {/* Right Side */}
@@ -84,11 +81,11 @@ const Navigation = () => {
               </Button>
             </Link>
             
-            <Link to="/dashboard" className="hidden md:block">
+            <a href="https://demo.puckeditor.com/edit" target="_blank" rel="noopener noreferrer" className="hidden md:block">
               <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                 Get Started
               </Button>
-            </Link>
+            </a>
 
             {/* Mobile Menu Button */}
             <Button
@@ -106,21 +103,18 @@ const Navigation = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col space-y-4">
-              <Link to="/features" className="text-muted-foreground hover:text-foreground">
+              <a href="#features" className="text-muted-foreground hover:text-foreground">
                 Features
-              </Link>
-              <Link to="/pricing" className="text-muted-foreground hover:text-foreground">
-                Pricing
-              </Link>
-              <Link to="/about" className="text-muted-foreground hover:text-foreground">
+              </a>
+              <a href="#about" className="text-muted-foreground hover:text-foreground">
                 About
-              </Link>
-              <Link to="/contact" className="text-muted-foreground hover:text-foreground">
+              </a>
+              <a href="#contact" className="text-muted-foreground hover:text-foreground">
                 Contact
-              </Link>
-              <Link to="/faq" className="text-muted-foreground hover:text-foreground">
+              </a>
+              <a href="#faq" className="text-muted-foreground hover:text-foreground">
                 FAQ
-              </Link>
+              </a>
               <div className="flex items-center justify-between pt-2">
                 <Button
                   variant="ghost"
@@ -138,11 +132,11 @@ const Navigation = () => {
                     Login
                   </Button>
                 </Link>
-                <Link to="/dashboard" className="flex-1">
+                <a href="https://demo.puckeditor.com/edit" target="_blank" rel="noopener noreferrer" className="flex-1">
                   <Button size="sm" className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
                     Get Started
                   </Button>
-                </Link>
+                </a>
               </div>
             </div>
           </div>
