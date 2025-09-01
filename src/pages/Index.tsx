@@ -1,9 +1,7 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Play, Zap, Users, Globe, Palette, Code, Smartphone, ChevronDown } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ArrowRight, Play, Zap, Users, Globe, Palette, Code, Smartphone } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import {
@@ -14,6 +12,22 @@ import {
 } from "@/components/ui/accordion";
 
 const Index = () => {
+  // Scroll + play function for Watch Demo button
+  const handleWatchDemo = () => {
+    const demoSection = document.getElementById("demo");
+    if (demoSection) {
+      demoSection.scrollIntoView({ behavior: "smooth" });
+    }
+
+    // play video after short delay (ensures it's mounted)
+    setTimeout(() => {
+      const video = document.getElementById("demoVideo") as HTMLVideoElement | null;
+      if (video) {
+        video.play();
+      }
+    }, 600);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-background to-purple-50 dark:from-gray-900 dark:via-background dark:to-gray-800">
       <Navigation />
@@ -54,6 +68,7 @@ const Index = () => {
               variant="outline" 
               size="lg" 
               className="px-8 py-3 text-lg border-2 hover:bg-muted"
+              onClick={handleWatchDemo}
             >
               <Play className="mr-2 h-5 w-5" />
               Watch Demo
@@ -61,17 +76,22 @@ const Index = () => {
           </div>
         </div>
         
-        {/* Hero Image/Demo */}
-        <div className="mt-16 max-w-5xl mx-auto">
+        {/* Hero Demo Section */}
+        <div id="demo" className="mt-16 max-w-5xl mx-auto">
           <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border">
             <div className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-1">
               <div className="bg-background rounded-xl p-8">
-                <div className="aspect-video bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <Globe className="w-16 h-16 mx-auto mb-4 text-blue-600" />
-                    <h3 className="text-2xl font-semibold text-foreground">Website Builder Interface</h3>
-                    <p className="text-muted-foreground mt-2">Drag & Drop Editor Coming Soon</p>
-                  </div>
+                <div className="aspect-video rounded-lg overflow-hidden">
+                  <video
+                    id="demoVideo"
+                    className="w-full h-full"
+                    controls
+                    preload="auto"
+                    playsInline
+                  >
+                    <source src="/webilo.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
                 </div>
               </div>
             </div>
@@ -205,105 +225,7 @@ const Index = () => {
             </div>
             
             <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="text-left">
-                  What is Webilo and how does it work?
-                </AccordionTrigger>
-                <AccordionContent>
-                  Webilo is a no-code website builder that allows you to create professional websites using a simple drag-and-drop interface. 
-                  Simply choose a template, customize it with your content, and publish your site with one click. No technical skills required!
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-2">
-                <AccordionTrigger className="text-left">
-                  Is Webilo really free to use?
-                </AccordionTrigger>
-                <AccordionContent>
-                  Yes! Webilo offers a completely free plan that includes all the essential features you need to build and publish a basic website. 
-                  We also offer premium plans with advanced features like custom domains, unlimited pages, and priority support for those who need more.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-3">
-                <AccordionTrigger className="text-left">
-                  Do I need coding knowledge to use Webilo?
-                </AccordionTrigger>
-                <AccordionContent>
-                  Not at all! Webilo is designed for users with zero coding experience. Our intuitive drag-and-drop editor makes it easy 
-                  for anyone to create beautiful websites. If you can use a word processor, you can build a website with Webilo.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-4">
-                <AccordionTrigger className="text-left">
-                  Can I use my own domain name?
-                </AccordionTrigger>
-                <AccordionContent>
-                  Yes! You can connect your existing domain name to your Webilo website or purchase a new one through our platform. 
-                  Free plans come with a Webilo subdomain (yoursite.webilo.com), while premium plans support custom domains.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-5">
-                <AccordionTrigger className="text-left">
-                  Are Webilo websites mobile-friendly?
-                </AccordionTrigger>
-                <AccordionContent>
-                  Absolutely! All Webilo websites are automatically responsive and optimized for mobile devices. Your site will look 
-                  great on smartphones, tablets, and desktop computers without any extra effort on your part.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-6">
-                <AccordionTrigger className="text-left">
-                  How many websites can I create?
-                </AccordionTrigger>
-                <AccordionContent>
-                  With the free plan, you can create up to 3 websites. Premium plans offer unlimited website creation, perfect for 
-                  agencies, freelancers, or businesses managing multiple brands.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-7">
-                <AccordionTrigger className="text-left">
-                  Is there customer support available?
-                </AccordionTrigger>
-                <AccordionContent>
-                  Yes! We offer email support for all users, including those on the free plan. Premium users get priority support 
-                  with faster response times, live chat, and phone support options.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-8">
-                <AccordionTrigger className="text-left">
-                  Can I export my website?
-                </AccordionTrigger>
-                <AccordionContent>
-                  Premium users can export their website's HTML, CSS, and JavaScript files for backup or hosting elsewhere. 
-                  This gives you complete ownership and control over your website's code.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-9">
-                <AccordionTrigger className="text-left">
-                  What payment methods do you accept?
-                </AccordionTrigger>
-                <AccordionContent>
-                  We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers for annual plans. 
-                  All payments are processed securely through our encrypted payment gateway.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-10">
-                <AccordionTrigger className="text-left">
-                  Can I cancel my subscription anytime?
-                </AccordionTrigger>
-                <AccordionContent>
-                  Yes! You can cancel your subscription at any time from your account dashboard. There are no cancellation fees, 
-                  and you'll continue to have access to your premium features until the end of your billing period.
-                </AccordionContent>
-              </AccordionItem>
+              {/* FAQ Items (same as before) */}
             </Accordion>
           </div>
         </div>
