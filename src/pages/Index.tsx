@@ -195,20 +195,7 @@ const Index = () => {
               We believe everyone deserves a professional online presence without the complexity and cost of traditional 
               web development.
             </p>
-            <div className="grid md:grid-cols-3 gap-8 mt-12">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-blue-600 mb-2">50K+</div>
-                <p className="text-muted-foreground">Active Users</p>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-purple-600 mb-2">100K+</div>
-                <p className="text-muted-foreground">Websites Created</p>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-green-600 mb-2">99.9%</div>
-                <p className="text-muted-foreground">Uptime</p>
-              </div>
-            </div>
+            {/* ✅ Stats Removed */}
           </div>
         </div>
       </section>
@@ -225,7 +212,7 @@ const Index = () => {
             </div>
             
             <Accordion type="single" collapsible className="w-full">
-              {/* FAQ Items (same as before) */}
+              {/* FAQ Items */}
             </Accordion>
           </div>
         </div>
@@ -234,34 +221,56 @@ const Index = () => {
       {/* Contact Section */}
       <section id="contact" className="py-20 bg-muted">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6 text-foreground">Get in Touch</h2>
             <p className="text-xl text-muted-foreground mb-8">
-              Have questions or need help? We're here for you!
+              Have questions or need help? Send me an email using the form below 👇
             </p>
-            <div className="grid md:grid-cols-3 gap-8">
-              <Card className="border-0 shadow-lg">
-                <CardContent className="pt-6">
-                  <h3 className="font-semibold text-lg mb-2">Email Support</h3>
-                  <p className="text-muted-foreground">support@webilo.com</p>
-                  <p className="text-sm text-muted-foreground mt-2">Response within 24 hours</p>
-                </CardContent>
-              </Card>
-              <Card className="border-0 shadow-lg">
-                <CardContent className="pt-6">
-                  <h3 className="font-semibold text-lg mb-2">Live Chat</h3>
-                  <p className="text-muted-foreground">Available 9 AM - 6 PM EST</p>
-                  <p className="text-sm text-muted-foreground mt-2">For premium users</p>
-                </CardContent>
-              </Card>
-              <Card className="border-0 shadow-lg">
-                <CardContent className="pt-6">
-                  <h3 className="font-semibold text-lg mb-2">Community Forum</h3>
-                  <p className="text-muted-foreground">community.webilo.com</p>
-                  <p className="text-sm text-muted-foreground mt-2">Join our community</p>
-                </CardContent>
-              </Card>
-            </div>
+
+            {/* ✅ Email Contact Form */}
+            <form 
+              action="mailto:your-email@example.com" 
+              method="POST" 
+              encType="text/plain" 
+              className="bg-background p-6 rounded-xl shadow-lg text-left"
+            >
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-foreground mb-2">Your Name</label>
+                <input 
+                  type="text" 
+                  name="name" 
+                  required 
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-foreground mb-2">Your Email</label>
+                <input 
+                  type="email" 
+                  name="email" 
+                  required 
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-foreground mb-2">Message</label>
+                <textarea 
+                  name="message" 
+                  rows={4} 
+                  required 
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <Button 
+                type="submit" 
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 text-lg"
+              >
+                Send Email
+              </Button>
+            </form>
           </div>
         </div>
       </section>

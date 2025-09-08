@@ -77,7 +77,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
- <img src="/W.jpg" alt="Webilo Logo" className="w-8 h-8 rounded-lg object-contain" />
+ <img src="/webilo.png" alt="Webilo Logo" className="w-11 h-11 rounded-lg object-contain" />
 
             <span className="text-xl font-bold text-foreground">Webilo</span>
           </Link>
