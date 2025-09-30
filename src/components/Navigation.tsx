@@ -111,7 +111,7 @@ const Navigation = () => {
             
             {user ? (
               <>
-                <a href="https://demo.puckeditor.com/edit" target="_blank" rel="noopener noreferrer" className="hidden md:block">
+                <a href="https://webilo-builder.vercel.app/" target="_blank" rel="noopener noreferrer" className="hidden md:block">
                   <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                     Get Started
                   </Button>
@@ -136,13 +136,13 @@ const Navigation = () => {
               </>
             ) : (
               <>
-                <Link to="/auth" className="hidden md:block">
+                <Link to="/editor/new" className="hidden md:block">
                   <Button variant="ghost" size="sm">
                     <User className="h-4 w-4 mr-2" />
                     Login
                   </Button>
                 </Link>
-                <a href="https://demo.puckeditor.com/edit" target="_blank" rel="noopener noreferrer" className="hidden md:block">
+                <a href="https://webilo-builder.vercel.app/" target="_blank" rel="noopener noreferrer" className="hidden md:block">
                   <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                     Get Started
                   </Button>
@@ -205,7 +205,7 @@ const Navigation = () => {
                   </>
                 ) : (
                   <div className="flex space-x-2">
-                    <Link to="/auth" className="flex-1">
+                    <Link to="/editor/new" className="flex-1">
                       <Button variant="outline" size="sm" className="w-full">
                         Login
                       </Button>

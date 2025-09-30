@@ -284,7 +284,7 @@ const Index = () => {
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
             Join thousands of students, NGOs, and small businesses who trust Webilo to create their online presence.
           </p>
-          <a href="https://demo.puckeditor.com/edit" target="_blank" rel="noopener noreferrer">
+          <a href="https://webilo-builder.vercel.app/" target="_blank" rel="noopener noreferrer">
             <Button 
               size="lg" 
               variant="secondary"
